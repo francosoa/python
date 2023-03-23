@@ -1,8 +1,0 @@
-A list compre faz tudo que a função map e filter fazem, porém o list comp é mais rápido.
-
-*Produtos cartesianos*
-
-Os itens que compõem o produto cartesiano são tuplas compostas de itens de
-todos os iteráveis de entrada. 
-
-*Expressões geradoras* 
