@@ -1,45 +1,28 @@
-from flask import Flask, jsonify, request
-from api.config.config import livros
+from flask import Flask, jsonify
+from api.functions.operators import df_to_json
+from api.config.variables import sep, path
+from collections import OrderedDict
+import json
 
 app = Flask(__name__) #Indicando que o __name__ é igual o nome do meu arquivo
 
 
-@app.route('/livros', methods=['GET'])
-def get_books():
-    return jsonify(livros)
+@app.route('/pokemon', methods=['GET'])
+def get_pokemons():
+    return json.loads(df_to_json(path, sep), object_pairs_hook=OrderedDict)
 
 #Consultar(id)
-@app.route('/livros/<int:id>', methods=['GET'])
-def get_book_id(id):
-    for livro in livros:
-        if livro.get('id') == id:
-            return jsonify(livro)
+@app.route('/pokemon/<type>', methods=['GET'])
+def get_pokemon_type(type):
+    pokemons = json.loads(df_to_json(path, sep))
+    pokemon_list = []
 
-# Editar
-@app.route('/livros/<int:id>', methods=['PUT'])
-def editar_livro_por_id(id):
-    livro_alterado = request.get_json()
-    for indice, livro in enumerate(livros):
-        if livro.get('id') == id:
-            livros[indice].update(livro_alterado)
-            return jsonify(livros[indice])
+    for pokemon in pokemons:
+        if pokemon.get('type_1') == type:
 
+            pokemon_list.append(pokemon)
 
-# Criar
-@app.route('/livros', methods=['POST'])
-def incluir_novo_livro():
-    novo_livro = request.get_json()
-    livros.append(novo_livro)
-    return jsonify(livros)
-
-
-# Excluir
-@app.route('/livros/<int:id>', methods=['DELETE'])
-def excluir_livro(id):
-    for indice, livro in enumerate(livros):
-        if livro.get('id') == id:
-            del livros[indice]
-    return jsonify(livros)
+    return jsonify(pokemon_list)
 
 
 app.run(port=5000, host='localhost', debug=True)
