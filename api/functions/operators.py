@@ -7,6 +7,7 @@ def df_to_json(file, sep=';', dtype=str, delete_id=None):
     :param file: Path of your csv file
     :param sep: Separator of your csv
     :param dtype: Type to convert all columns
+    :param delete_id: True if you want delete the columns ID of your DF
     :return: A JSON object
 
     """
@@ -19,8 +20,8 @@ def df_to_json(file, sep=';', dtype=str, delete_id=None):
         for column in df.columns:
             logging.info(column)
 
-            if column == '#':
-                df.drop('#', axis=1, inplace=True)
+            if column == 'id':
+                df.drop('id', axis=1, inplace=True)
             else:
                 break
 
